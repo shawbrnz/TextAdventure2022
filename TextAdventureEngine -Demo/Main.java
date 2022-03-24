@@ -6,22 +6,30 @@ import java.util.Scanner;//Importing Scanner so keyboard inputs can be recorded.
 public class Main
 {
     //Room varibles
-    final String[] ROOM_NAME={"First Room","Second Room","Third Room"};
+    final String[] ROOM_NAME={
+            "Three Paths","The South Path","The Southern Lookout",
+            "The Dead End","The Endless path","The Stream", "The Forked Bridge",
+            "Northern Lookout"};
     final String[] ROOM_DESCRIPTION={
-        "Starting room",
-        "Another room",
-        "More of the same Room"};
-    final int[] MOVE_EAST={1,2,1};
-    final int[] MOVE_WEST={1,0,1};
-    final int[] MOVE_NORTH={2,1,1};
-    final int[] MOVE_SOUTH={2,0,1};
-    final int[] MOVE_UP={1,0,1};
-    final int[] MOVE_DOWN={1,0,-1};
+            "You see three paths, one going north, one going straight up a hill and one going south",
+            "The south path just keeps going south. You can keep going south or back north",
+            "While the last steps up the lookout was hard, but from here you can see the entire near by area. It also looks like the path that goes east",
+            "After about 100 meters, the path disappears off a cliff. The only way out is back west",
+            "No matter how far you go the path keeps going",
+            "You notice the same stream over and over again. It looks like it might go somewhere down stream", 
+            "You can see a bridge that has three paths coming off of it. There is a path going south with a sign with a skull and crossbones, there is a path going north and a path that follows the river downhill",
+            "While the last steps up the lookout was hard, but from here you can see the entire near by area. It also looks like there are two paths, one that goes back south and the other that goes east"};
+    final int[] MOVE_EAST={-1,-1,3, -1, 5, 4, -1, 6};
+    final int[] MOVE_WEST={-1,-1,-1,4,5,4,-1,-1};
+    final int[] MOVE_NORTH={7,0,-1, -1,-1,-1,7,-1};
+    final int[] MOVE_SOUTH={1,2,-1,-1,-1,-1,2,0};
+    final int[] MOVE_UP={6,-1,-1,-1,-1,-1,-1,-1};
+    final int[] MOVE_DOWN={-1,-1,-1,-1,-1,6,0,-1};
     int currentRoom;
     //Win conditions
-    final int WIN_ITEM=0;
-    final int WIN_ROOM=2;
-    final String WIN_MESSAGE="You Win!";
+    final int WIN_ITEM=1;
+    final int WIN_ROOM=3;
+    final String WIN_MESSAGE="You Place the magic box and you feel a sense of winning!";
     final String LOSE_MESSAGE="The End!";
     //Movement commands
     final String EAST_COMMAND="east";
@@ -39,11 +47,11 @@ public class Main
     final String END_COMMAND="end";
     final String LIST_COMMAND="command";
     //Item varibles
-    final String[] ITEM_NAME = {"First Item","Second Item"};
-    int[] itemLocation = {1,0};
+    final String[] ITEM_NAME = {"Danger Sign","Magic-Box"};
+    int[] itemLocation = {1,7};
     //Keep running
     boolean keepRunning = true;
-    
+
     /**
      * Constructor for objects of class Main
      */
@@ -63,7 +71,7 @@ public class Main
             if(!(MOVE_DOWN[currentRoom]==-1)){allowedDirections+="down ";}
             if(!allowedDirections.equals("")){
                 System.out.println("You can go "+allowedDirections);}
-            else{//If you somehow get stuck, you lose instead of being stuck
+            else{//If you somehow get stuck, you lose instead of being stuck. 
                 System.out.println(LOSE_MESSAGE);
                 keepRunning=false;
             }
