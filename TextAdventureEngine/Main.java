@@ -1,6 +1,6 @@
 /**
  * @BrendanShaw
- * @V7-25-3
+ * @V8-25-3
  */
 import java.util.Scanner;//Importing Scanner so keyboard inputs can be recorded.
 public class Main
@@ -8,28 +8,28 @@ public class Main
     //Room varibles
     final String[] ROOM_NAME={"First Room","Second Room","Third Room"};
     final String[] ROOM_DESCRIPTION={
-        "Starting room",
-        "Another room",
-        "More of the same Room"};
-    final int[] MOVE_EAST={1,2,1};
-    final int[] MOVE_WEST={1,0,1};
-    final int[] MOVE_NORTH={2,1,1};
-    final int[] MOVE_SOUTH={2,0,1};
-    final int[] MOVE_UP={1,0,1};
-    final int[] MOVE_DOWN={1,0,-1};
+            "Starting room",
+            "Another room",
+            "More of the same Room"};
+    final int[][] MOVE_DIRECTION={{1,2,1},//East direction
+            {1,0,1},//West direction
+            {1,1,1},//North direction
+            {2,-1,-1},//South direction
+            {2,1,0},//Up direction
+            {-1,0,1}};//Down direction
     int currentRoom;
     //Win conditions
-    final int WIN_ITEM=0;
+    final int[] WIN_ITEM={0};
     final int WIN_ROOM=2;
     final String WIN_MESSAGE="You Win!";
     final String LOSE_MESSAGE="The End!";
     //Movement commands
-    final String EAST_COMMAND="east";
-    final String WEST_COMMAND="west";
-    final String SOUTH_COMMAND="south";
-    final String NORTH_COMMAND="north";
-    final String UP_COMMAND="up";
-    final String DOWN_COMMAND="down";
+    final String[] MOVE_COMMAND={"east",//East commands
+            "west",//west commands
+            "south",//south commands
+            "north",//north commands
+            "up",//up commands
+            "down"};//down commands
     //Item commands
     final String INVENTORY_COMMAND="checkinventory";
     final String LOOK_COMMAND="lookaround";
@@ -43,10 +43,7 @@ public class Main
     int[] itemLocation = {1,0};
     //Keep running
     boolean keepRunning = true;
-    
-    /**
-     * Constructor for objects of class Main
-     */
+
     public Main()
     {
         // initialise instance variables
@@ -55,12 +52,9 @@ public class Main
             System.out.println("You are at "+ROOM_NAME[currentRoom]);
             System.out.println(ROOM_DESCRIPTION[currentRoom]);
             String allowedDirections="";
-            if(!(MOVE_EAST[currentRoom]==-1)){allowedDirections+="east ";}
-            if(!(MOVE_WEST[currentRoom]==-1)){allowedDirections+="west ";}
-            if(!(MOVE_SOUTH[currentRoom]==-1)){allowedDirections+="south ";}
-            if(!(MOVE_NORTH[currentRoom]==-1)){allowedDirections+="north ";}
-            if(!(MOVE_UP[currentRoom]==-1)){allowedDirections+="up ";}
-            if(!(MOVE_DOWN[currentRoom]==-1)){allowedDirections+="down ";}
+            for(int i=0; i<MOVE_DIRECTION.length;i++){
+                if(!(MOVE_DIRECTION[i][currentRoom]==-1)){allowedDirections+=MOVE_COMMAND[i]+" ";}
+            }
             if(!allowedDirections.equals("")){
                 System.out.println("You can go "+allowedDirections);}
             else{//If you somehow get stuck, you lose instead of being stuck
@@ -72,32 +66,14 @@ public class Main
             System.out.println("What do you want to do?");
             String scannerOutput=scanner.nextLine().toLowerCase();
             //Movement commands
-            if (scannerOutput.equals(SOUTH_COMMAND)&&MOVE_SOUTH[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(SOUTH_COMMAND))){
-                currentRoom=MOVE_SOUTH[currentRoom];
-            }else if (scannerOutput.equals(NORTH_COMMAND)&&MOVE_NORTH[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(NORTH_COMMAND))){
-                currentRoom=MOVE_NORTH[currentRoom];
-            }else if (scannerOutput.equals(EAST_COMMAND)&&MOVE_EAST[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(EAST_COMMAND))){
-                currentRoom=MOVE_EAST[currentRoom];
-            }else if (scannerOutput.equals(WEST_COMMAND)&&MOVE_WEST[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(WEST_COMMAND))){
-                currentRoom=MOVE_WEST[currentRoom];
-            }else if (scannerOutput.equals(UP_COMMAND)&&MOVE_UP[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(UP_COMMAND))){
-                currentRoom=MOVE_UP[currentRoom];
-            }else if (scannerOutput.equals(DOWN_COMMAND)&&MOVE_DOWN[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(DOWN_COMMAND))){
-                currentRoom=MOVE_DOWN[currentRoom];
+            for(int i=0; i<MOVE_DIRECTION.length;i++){
+                if (scannerOutput.equals(MOVE_COMMAND[i])&&MOVE_DIRECTION[i][currentRoom]==-1){
+                    System.out.println("You can't go there!");}
+                else if(scannerOutput.equals(MOVE_COMMAND[i])){
+                    currentRoom=MOVE_DIRECTION[i][currentRoom];
+                }
             }//Item commands
-            else if ((scannerOutput.equals(INVENTORY_COMMAND))){
+            if ((scannerOutput.equals(INVENTORY_COMMAND))){
                 for (int i=0; i<itemLocation.length;i++){
                     if(itemLocation[i]==-1){
                         System.out.println(ITEM_NAME[i]);
@@ -123,12 +99,12 @@ public class Main
                 keepRunning=false;
             }else if ((scannerOutput.equals(LIST_COMMAND))){
                 //Lists the movement commands
-                System.out.println("Command to move east- " +EAST_COMMAND);
-                System.out.println("Command to move west- " +WEST_COMMAND);
-                System.out.println("Command to move south- " +SOUTH_COMMAND);
-                System.out.println("Command to move north- " +NORTH_COMMAND);
-                System.out.println("Command to move up- " +UP_COMMAND);
-                System.out.println("Command to move down- " +DOWN_COMMAND);
+                System.out.println("Command to move east- " +MOVE_COMMAND[0]);
+                System.out.println("Command to move west- " +MOVE_COMMAND[1]);
+                System.out.println("Command to move south- " +MOVE_COMMAND[2]);
+                System.out.println("Command to move north- " +MOVE_COMMAND[3]);
+                System.out.println("Command to move up- " +MOVE_COMMAND[4]);
+                System.out.println("Command to move down- " +MOVE_COMMAND[5]);
                 //Lists the item commands
                 System.out.println("Command to check you inventory- " +INVENTORY_COMMAND);
                 System.out.println("Command to look around- " +LOOK_COMMAND);
@@ -137,14 +113,13 @@ public class Main
                 //List the other commands
                 System.out.println("Command to give up- " +END_COMMAND);
                 System.out.println("Command to check commands- " +LIST_COMMAND);
-            }else{
-                System.out.println("Invalid command");
             }
             //Win condition
-            if(itemLocation[WIN_ITEM]==WIN_ROOM){
-                System.out.println(WIN_MESSAGE);
-                keepRunning=false;
-            }
+            for(int i=0; i<WIN_ITEM.length;i++){
+                if(itemLocation[WIN_ITEM[i]]==WIN_ROOM){
+                    System.out.println(WIN_MESSAGE);
+                    keepRunning=false;
+                }}
         }
     }
 }

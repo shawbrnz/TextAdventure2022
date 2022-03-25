@@ -1,6 +1,6 @@
 /**
  * @BrendanShaw
- * @V7-25-3
+ * @V8-25-3
  */
 import java.util.Scanner;//Importing Scanner so keyboard inputs can be recorded.
 public class Main
@@ -19,25 +19,25 @@ public class Main
             "You notice the same stream over and over again. It looks like it might go somewhere down stream", 
             "You can see a bridge that has three paths coming off of it. There is a path going south with a sign with a skull and crossbones, there is a path going north and a path that follows the river downhill",
             "While the last steps up the lookout was hard, but from here you can see the entire near by area. It also looks like there are two paths, one that goes back south and the other that goes east"};
-    final int[] MOVE_EAST={-1,-1,3, -1, 5, 4, -1, 6};
-    final int[] MOVE_WEST={-1,-1,-1,4,5,4,-1,-1};
-    final int[] MOVE_NORTH={7,0,-1, -1,-1,-1,7,-1};
-    final int[] MOVE_SOUTH={1,2,-1,-1,-1,-1,2,0};
-    final int[] MOVE_UP={6,-1,-1,-1,-1,-1,-1,-1};
-    final int[] MOVE_DOWN={-1,-1,-1,-1,-1,6,0,-1};
+    final int[][] MOVE_DIRECTION={{-1,-1,3, -1, 5, 4, -1, 6},//East direction
+            {-1,-1,-1,4,5,4,-1,-1},//West direction
+            {7,0,-1, -1,-1,-1,7,-1},//North direction
+            {1,2,-1,-1,-1,-1,2,0},//South direction
+            {6,-1,-1,-1,-1,-1,-1,-1},//Up direction
+            {-1,-1,-1,-1,-1,6,0,-1}};//Down direction
     int currentRoom;
     //Win conditions
-    final int WIN_ITEM=1;
+    final int[] WIN_ITEM={1};
     final int WIN_ROOM=3;
     final String WIN_MESSAGE="You Place the magic box and you feel a sense of winning!";
     final String LOSE_MESSAGE="The End!";
     //Movement commands
-    final String EAST_COMMAND="east";
-    final String WEST_COMMAND="west";
-    final String SOUTH_COMMAND="south";
-    final String NORTH_COMMAND="north";
-    final String UP_COMMAND="up";
-    final String DOWN_COMMAND="down";
+    final String[] MOVE_COMMAND={"east",//East commands
+            "west",//west commands
+            "north",//north commands
+            "south",//south commands
+            "up",//up commands
+            "down"};//down commands
     //Item commands
     final String INVENTORY_COMMAND="checkinventory";
     final String LOOK_COMMAND="lookaround";
@@ -52,9 +52,6 @@ public class Main
     //Keep running
     boolean keepRunning = true;
 
-    /**
-     * Constructor for objects of class Main
-     */
     public Main()
     {
         // initialise instance variables
@@ -63,15 +60,12 @@ public class Main
             System.out.println("You are at "+ROOM_NAME[currentRoom]);
             System.out.println(ROOM_DESCRIPTION[currentRoom]);
             String allowedDirections="";
-            if(!(MOVE_EAST[currentRoom]==-1)){allowedDirections+="east ";}
-            if(!(MOVE_WEST[currentRoom]==-1)){allowedDirections+="west ";}
-            if(!(MOVE_SOUTH[currentRoom]==-1)){allowedDirections+="south ";}
-            if(!(MOVE_NORTH[currentRoom]==-1)){allowedDirections+="north ";}
-            if(!(MOVE_UP[currentRoom]==-1)){allowedDirections+="up ";}
-            if(!(MOVE_DOWN[currentRoom]==-1)){allowedDirections+="down ";}
+            for(int i=0; i<MOVE_DIRECTION.length;i++){
+                if(!(MOVE_DIRECTION[i][currentRoom]==-1)){allowedDirections+=MOVE_COMMAND[i]+" ";}
+            }
             if(!allowedDirections.equals("")){
                 System.out.println("You can go "+allowedDirections);}
-            else{//If you somehow get stuck, you lose instead of being stuck. 
+            else{//If you somehow get stuck, you lose instead of being stuck
                 System.out.println(LOSE_MESSAGE);
                 keepRunning=false;
             }
@@ -80,32 +74,15 @@ public class Main
             System.out.println("What do you want to do?");
             String scannerOutput=scanner.nextLine().toLowerCase();
             //Movement commands
-            if (scannerOutput.equals(SOUTH_COMMAND)&&MOVE_SOUTH[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(SOUTH_COMMAND))){
-                currentRoom=MOVE_SOUTH[currentRoom];
-            }else if (scannerOutput.equals(NORTH_COMMAND)&&MOVE_NORTH[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(NORTH_COMMAND))){
-                currentRoom=MOVE_NORTH[currentRoom];
-            }else if (scannerOutput.equals(EAST_COMMAND)&&MOVE_EAST[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(EAST_COMMAND))){
-                currentRoom=MOVE_EAST[currentRoom];
-            }else if (scannerOutput.equals(WEST_COMMAND)&&MOVE_WEST[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(WEST_COMMAND))){
-                currentRoom=MOVE_WEST[currentRoom];
-            }else if (scannerOutput.equals(UP_COMMAND)&&MOVE_UP[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(UP_COMMAND))){
-                currentRoom=MOVE_UP[currentRoom];
-            }else if (scannerOutput.equals(DOWN_COMMAND)&&MOVE_DOWN[currentRoom]==-1){
-                System.out.println("You can't go there!");
-            }else if ((scannerOutput.equals(DOWN_COMMAND))){
-                currentRoom=MOVE_DOWN[currentRoom];
+            for(int i=0; i<MOVE_DIRECTION.length;i++){
+                if (scannerOutput.equals(MOVE_COMMAND[i])&&MOVE_DIRECTION[i][currentRoom]==-1){
+                    System.out.println("You can't go there!");}
+                else if(scannerOutput.equals(MOVE_COMMAND[i])){
+                    currentRoom=MOVE_DIRECTION[i][currentRoom];
+                    System.out.println(MOVE_DIRECTION[i][currentRoom]+" "+i);
+                }
             }//Item commands
-            else if ((scannerOutput.equals(INVENTORY_COMMAND))){
+            if ((scannerOutput.equals(INVENTORY_COMMAND))){
                 for (int i=0; i<itemLocation.length;i++){
                     if(itemLocation[i]==-1){
                         System.out.println(ITEM_NAME[i]);
@@ -131,12 +108,12 @@ public class Main
                 keepRunning=false;
             }else if ((scannerOutput.equals(LIST_COMMAND))){
                 //Lists the movement commands
-                System.out.println("Command to move east- " +EAST_COMMAND);
-                System.out.println("Command to move west- " +WEST_COMMAND);
-                System.out.println("Command to move south- " +SOUTH_COMMAND);
-                System.out.println("Command to move north- " +NORTH_COMMAND);
-                System.out.println("Command to move up- " +UP_COMMAND);
-                System.out.println("Command to move down- " +DOWN_COMMAND);
+                System.out.println("Command to move east- " +MOVE_COMMAND[0]);
+                System.out.println("Command to move west- " +MOVE_COMMAND[1]);
+                System.out.println("Command to move south- " +MOVE_COMMAND[2]);
+                System.out.println("Command to move north- " +MOVE_COMMAND[3]);
+                System.out.println("Command to move up- " +MOVE_COMMAND[4]);
+                System.out.println("Command to move down- " +MOVE_COMMAND[5]);
                 //Lists the item commands
                 System.out.println("Command to check you inventory- " +INVENTORY_COMMAND);
                 System.out.println("Command to look around- " +LOOK_COMMAND);
@@ -145,14 +122,13 @@ public class Main
                 //List the other commands
                 System.out.println("Command to give up- " +END_COMMAND);
                 System.out.println("Command to check commands- " +LIST_COMMAND);
-            }else{
-                System.out.println("Invalid command");
             }
             //Win condition
-            if(itemLocation[WIN_ITEM]==WIN_ROOM){
-                System.out.println(WIN_MESSAGE);
-                keepRunning=false;
-            }
+            for(int i=0; i<WIN_ITEM.length;i++){
+                if(itemLocation[WIN_ITEM[i]]==WIN_ROOM){
+                    System.out.println(WIN_MESSAGE);
+                    keepRunning=false;
+                }}
         }
     }
 }
