@@ -7,8 +7,13 @@ public class Main
 {
     //Room varibles
     final String[] ROOM_NAME={
-            "Three Paths","The South Path","The Southern Lookout",
-            "The Dead End","The Endless path","The Stream", "The Forked Bridge",
+            "Three Paths",
+            "The South Path",
+            "The Southern Lookout",
+            "The Dead End",
+            "The Endless path",
+            "The Stream", 
+            "The Forked Bridge",
             "Northern Lookout"};
     final String[] ROOM_DESCRIPTION={
             "You see three paths, one going north, one going straight up a hill and one going south",
@@ -19,7 +24,8 @@ public class Main
             "You notice the same stream over and over again. It looks like it might go somewhere down stream", 
             "You can see a bridge that has three paths coming off of it. There is a path going south with a sign with a skull and crossbones, there is a path going north and a path that follows the river downhill",
             "While the last steps up the lookout was hard, but from here you can see the entire near by area. It also looks like there are two paths, one that goes back south and the other that goes east"};
-    final int[][] MOVE_DIRECTION={{-1,-1,3, -1, 5, 4, -1, 6},//East direction
+    final int[][] MOVE_DIRECTION={
+            {-1,-1,3, -1, 5, 4, -1, 6},//East direction
             {-1,-1,-1,4,5,4,-1,-1},//West direction
             {7,0,-1, -1,-1,-1,7,-1},//North direction
             {1,2,-1,-1,-1,-1,2,0},//South direction
@@ -32,7 +38,8 @@ public class Main
     final String WIN_MESSAGE="You Place the magic box and you feel a sense of winning!";
     final String LOSE_MESSAGE="The End!";
     //Movement commands
-    final String[] MOVE_COMMAND={"east",//East commands
+    final String[] MOVE_COMMAND={
+            "east",//East commands
             "west",//west commands
             "north",//north commands
             "south",//south commands
@@ -86,22 +93,26 @@ public class Main
                 for (int i=0; i<itemLocation.length;i++){
                     if(itemLocation[i]==-1){
                         System.out.println(ITEM_NAME[i]);
-                    }}
+                    }
+                }
             }else if ((scannerOutput.equals(LOOK_COMMAND))){
                 for (int i=0; i<itemLocation.length;i++){
                     if(itemLocation[i]==currentRoom){
                         System.out.println("You can see "+ITEM_NAME[i]);
-                    }}
+                    }
+                }
             }else if ((scannerOutput.equals(GRAB_COMMAND))){
                 for (int i=0; i<itemLocation.length;i++){
                     if(itemLocation[i]==currentRoom){
                         itemLocation[i]=-1;
-                    }}
+                    }
+                }
             }else if ((scannerOutput.equals(DROP_COMMAND))){
                 for (int i=0; i<itemLocation.length;i++){
                     if(itemLocation[i]==-1){
                         itemLocation[i]=currentRoom;
-                    }}
+                    }
+                }
             }//Other commands
             else if ((scannerOutput.equals(END_COMMAND))){
                 System.out.println(LOSE_MESSAGE);
@@ -128,7 +139,8 @@ public class Main
                 if(itemLocation[WIN_ITEM[i]]==WIN_ROOM){
                     System.out.println(WIN_MESSAGE);
                     keepRunning=false;
-                }}
+                }
+            }
         }
     }
 }
