@@ -86,7 +86,6 @@ public class Main
                     System.out.println("You can't go there!");}
                 else if(scannerOutput.equals(MOVE_COMMAND[i])){
                     currentRoom=MOVE_DIRECTION[i][currentRoom];
-                    System.out.println(MOVE_DIRECTION[i][currentRoom]+" "+i);
                 }
             }//Item commands
             if ((scannerOutput.equals(INVENTORY_COMMAND))){
