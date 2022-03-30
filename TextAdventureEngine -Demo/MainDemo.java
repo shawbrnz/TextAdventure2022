@@ -3,7 +3,7 @@
  * @V8-25-3
  */
 import java.util.Scanner;//Importing Scanner so keyboard inputs can be recorded.
-public class Main
+public class MainDemo
 {
     //Room varibles
     final String[] ROOM_NAME={
@@ -59,7 +59,7 @@ public class Main
     //Keep running
     boolean keepRunning = true;
 
-    public Main()
+    public MainDemo()
     {
         // initialise instance variables
         while (keepRunning){
